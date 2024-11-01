@@ -1,0 +1,129 @@
+{
+  "title": "Profile",
+  "description": "Manage your profile information and preferences",
+
+  "edit": {
+    "title": "Edit Profile",
+    "name": "Name",
+    "bio": "Bio",
+    "location": "Location",
+    "website": "Website",
+    "namePlaceholder": "Enter your name",
+    "bioPlaceholder": "Tell us about yourself",
+    "locationPlaceholder": "Where are you based?",
+    "websitePlaceholder": "Your website URL"
+  },
+
+  "info": {
+    "title": "Profile Information",
+    "bio": "Bio",
+    "location": "Location",
+    "website": "Website",
+    "joined": "Joined {{date}}",
+    "empty": {
+      "bio": "No bio added yet",
+      "location": "No location added",
+      "website": "No website added"
+    }
+  },
+
+  "activity": {
+    "title": "Activity History",
+    "empty": "No activities to show",
+    "loading": "Loading activities...",
+    "loadMore": "Load more",
+    "tabs": {
+      "all": "All Activities",
+      "friends": "Friend Activity",
+      "content": "Content Activity"
+    },
+    "types": {
+      "FRIEND_REQUEST": "sent a friend request",
+      "FRIEND_ACCEPTED": "accepted your friend request",
+      "PROFILE_UPDATE": "updated their profile",
+      "POST_CREATED": "created a new post",
+      "COMMENT_ADDED": "commented on a post"
+    }
+  },
+
+  "social": {
+    "title": "Social Links",
+    "twitter": "Twitter",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "twitterPlaceholder": "https://twitter.com/username",
+    "githubPlaceholder": "https://github.com/username",
+    "linkedinPlaceholder": "https://linkedin.com/in/username"
+  },
+
+  "stats": {
+    "friends": "{{count}} Friends",
+    "posts": "{{count}} Posts",
+    "activities": "{{count}} Activities"
+  },
+
+  "actions": {
+    "edit": "Edit Profile",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "upload": {
+      "avatar": "Change Avatar",
+      "cover": "Change Cover Image"
+    }
+  },
+
+  "success": {
+    "update": "Profile Updated",
+    "updateDescription": "Your profile has been successfully updated",
+    "imageUpload": "Image Uploaded",
+    "imageUploadDescription": "Your image has been successfully uploaded",
+    "avatarUpdate": "Avatar Updated",
+    "avatarUpdateDescription": "Your avatar has been successfully updated",
+    "coverUpdate": "Cover Image Updated",
+    "coverUpdateDescription": "Your cover image has been successfully updated"
+  },
+
+  "errors": {
+    "loadFailed": "Failed to load profile",
+    "notFound": "Profile not found",
+    "notFoundDescription": "The profile you're looking for doesn't exist or has been removed",
+    "updateFailed": "Failed to update profile",
+    "uploadFailed": "Failed to upload image",
+    "invalidImage": "Invalid image file",
+    "invalidImageType": "Please upload a valid image file (JPG, PNG, or GIF)",
+    "imageTooLarge": "Image too large",
+    "imageSizeLimit": "Image size should be less than 5MB",
+    "networkError": "Network error occurred. Please check your connection",
+    "unauthorized": "You're not authorized to view this profile",
+    "unknownError": "An unknown error occurred",
+    "activityLoadFailed": "Failed to load activities",
+    "validation": {
+      "name": {
+        "required": "Name is required",
+        "tooShort": "Name must be at least 2 characters"
+      },
+      "bio": {
+        "tooLong": "Bio must be less than 500 characters"
+      },
+      "location": {
+        "tooLong": "Location must be less than 100 characters"
+      },
+      "website": {
+        "invalid": "Please enter a valid URL"
+      },
+      "socialLinks": {
+        "invalid": "Please enter a valid URL"
+      }
+    }
+  },
+
+  "aria": {
+    "uploadAvatar": "Upload new avatar image",
+    "uploadCover": "Upload new cover image",
+    "editProfile": "Edit profile information",
+    "saveChanges": "Save profile changes",
+    "cancelEdit": "Cancel editing profile",
+    "loadMore": "Load more activities"
+  }
+}

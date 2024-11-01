@@ -1,0 +1,106 @@
+{
+  "title": "Friends",
+  "description": "Connect with others and manage your friendships",
+
+  "tabs": {
+    "list": "Friends List",
+    "requests": "Friend Requests",
+    "search": "Find Friends"
+  },
+
+  "list": {
+    "title": "Your Friends",
+    "empty": "You don't have any friends yet",
+    "loading": "Loading friends...",
+    "loadMore": "Load more friends",
+    "stats": {
+      "mutual": "{{count}} mutual friends",
+      "since": "Friends since {{date}}"
+    }
+  },
+
+  "requests": {
+    "title": "Friend Requests",
+    "empty": "No pending friend requests",
+    "loading": "Loading requests...",
+    "loadMore": "Load more requests",
+    "sent": "Request sent",
+    "received": "Request received",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "declined": "Declined"
+  },
+
+  "search": {
+    "title": "Find Friends",
+    "placeholder": "Search by name or email",
+    "searching": "Searching...",
+    "noResults": "No users found",
+    "empty": "Try searching for friends by their name or email",
+    "suggestions": "People you might know"
+  },
+
+  "actions": {
+    "add": "Add Friend",
+    "remove": "Remove Friend",
+    "accept": "Accept",
+    "decline": "Decline",
+    "cancel": "Cancel Request",
+    "block": "Block User",
+    "unblock": "Unblock User",
+    "message": "Message",
+    "viewProfile": "View Profile"
+  },
+
+  "confirmations": {
+    "remove": {
+      "title": "Remove Friend",
+      "description": "Are you sure you want to remove {{name}} from your friends list?",
+      "confirm": "Yes, remove",
+      "cancel": "No, keep"
+    },
+    "block": {
+      "title": "Block User",
+      "description": "Are you sure you want to block {{name}}? They won't be able to see your profile or send you messages.",
+      "confirm": "Yes, block",
+      "cancel": "No, don't block"
+    }
+  },
+
+  "success": {
+    "requestSent": "Friend request sent to {{name}}",
+    "requestAccepted": "You are now friends with {{name}}",
+    "requestDeclined": "Friend request declined",
+    "friendRemoved": "{{name}} has been removed from your friends",
+    "userBlocked": "{{name}} has been blocked",
+    "userUnblocked": "{{name}} has been unblocked"
+  },
+
+  "errors": {
+    "loadFailed": "Failed to load friends",
+    "searchFailed": "Failed to search users",
+    "requestFailed": "Failed to send friend request",
+    "acceptFailed": "Failed to accept friend request",
+    "declineFailed": "Failed to decline friend request",
+    "removeFailed": "Failed to remove friend",
+    "blockFailed": "Failed to block user",
+    "unblockFailed": "Failed to unblock user",
+    "unknown": "An unknown error occurred",
+    "networkError": "Network error occurred. Please check your connection",
+    "alreadyFriends": "You are already friends with this user",
+    "requestPending": "Friend request already sent",
+    "blocked": "You cannot add this user as a friend",
+    "maxFriends": "You have reached the maximum number of friends"
+  },
+
+  "aria": {
+    "searchInput": "Search for friends",
+    "acceptRequest": "Accept friend request from {{name}}",
+    "declineRequest": "Decline friend request from {{name}}",
+    "removeFriend": "Remove {{name}} from friends",
+    "blockUser": "Block {{name}}",
+    "unblockUser": "Unblock {{name}}",
+    "messageUser": "Send message to {{name}}",
+    "viewProfile": "View {{name}}'s profile"
+  }
+}

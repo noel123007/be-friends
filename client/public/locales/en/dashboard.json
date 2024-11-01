@@ -1,0 +1,50 @@
+{
+  "title": "Dashboard",
+  "description": "Overview of your activity and connections",
+
+  "welcome": {
+    "greeting": "Welcome back, {{name}}!",
+    "lastLogin": "Last login {{time}}",
+    "today": "Here's what's happening today"
+  },
+
+  "activity": {
+    "title": "Recent Activity",
+    "empty": "No recent activity",
+    "loading": "Loading activities...",
+    "error": "Failed to load activities",
+    "types": {
+      "FRIEND_REQUEST": "sent you a friend request",
+      "FRIEND_ACCEPTED": "accepted your friend request",
+      "PROFILE_UPDATE": "updated their profile",
+      "POST_CREATED": "created a new post",
+      "COMMENT_ADDED": "commented on your post"
+    }
+  },
+
+  "friends": {
+    "title": "Friends",
+    "viewAll": "View all",
+    "empty": "No friends yet",
+    "find": "Find friends",
+    "loading": "Loading friends...",
+    "error": "Failed to load friends"
+  },
+
+  "navigation": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "friends": "Friends",
+    "chat": "Chat",
+    "settings": "Settings"
+  },
+
+  "menu": {
+    "open": "Open menu",
+    "close": "Close menu"
+  },
+
+  "actions": {
+    "logout": "Logout"
+  }
+}

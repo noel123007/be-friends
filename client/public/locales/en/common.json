@@ -1,0 +1,42 @@
+{
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "actions": {
+    "close": "Close",
+    "open": "Open",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "retry": "Retry"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "required": "This field is required"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Overview of your activity and connections"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your personal information and preferences"
+    },
+    "friends": {
+      "title": "Friends",
+      "description": "Connect with others and manage your friendships"
+    },
+    "chat": {
+      "title": "Chat",
+      "description": "Message and communicate with your friends"
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Configure your account and application preferences"
+    }
+  }
+}

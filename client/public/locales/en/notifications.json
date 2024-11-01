@@ -1,0 +1,41 @@
+{
+  "bell": {
+    "ariaLabel": "Notifications ({{count}} unread)"
+  },
+  "list": {
+    "title": "Notifications",
+    "loading": "Loading notifications...",
+    "empty": "No notifications",
+    "error": "Failed to load notifications"
+  },
+  "actions": {
+    "markAsRead": "Mark as read",
+    "markAllRead": "Mark all as read"
+  },
+  "preferences": {
+    "title": "Notification Preferences",
+    "friendRequests": {
+      "title": "Friend Requests",
+      "description": "Get notified when someone sends you a friend request"
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Get notified when you receive a new message"
+    },
+    "system": {
+      "title": "System Notifications",
+      "description": "Get notified about important system updates"
+    },
+    "email": {
+      "title": "Email Notifications",
+      "description": "Receive notifications via email"
+    },
+    "errors": {
+      "updateFailed": "Failed to update preferences"
+    }
+  },
+  "errors": {
+    "markReadFailed": "Failed to mark notification as read",
+    "markAllReadFailed": "Failed to mark all notifications as read"
+  }
+}
