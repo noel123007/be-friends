@@ -30,7 +30,7 @@ interface FriendRequestsProps {
 export function FriendRequests({ data }: FriendRequestsProps) {
   const { t } = useTranslation(['friends']);
   const requests = data?.friendRequests.edges.map((edge) => edge.node) || [];
-  console.log(requests, data);
+
   const [acceptRequest, { loading: accepting }] = useMutation(ACCEPT_FRIEND_REQUEST, {
     refetchQueries: [{ query: GET_FRIEND_REQUESTS }],
     onError: (error) => {
