@@ -1,7 +1,9 @@
+import { FriendActionButton } from '@/components/friend-action-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/providers/auth-provider';
 import type { Friend } from '@/types/friend';
+import { FriendStatus } from '@/types/friend';
 import { useTranslation } from 'react-i18next';
 
 interface FriendsListProps {
@@ -21,6 +23,7 @@ interface FriendsListProps {
 
 export function FriendsList({ data }: FriendsListProps) {
   const { t } = useTranslation(['friends']);
+  const { user: currentUser } = useAuth();
   const friends = data?.friends.edges.map((edge) => edge.node) || [];
 
   if (friends.length === 0) {
@@ -39,23 +42,30 @@ export function FriendsList({ data }: FriendsListProps) {
         <CardTitle>{t('friends:list.title')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {friends.map((friend) => (
-          <div key={friend.id} className="flex items-center justify-between rounded-lg border p-4">
-            <div className="flex items-center gap-4">
-              <Avatar>
-                <AvatarImage src={friend.user.avatar} alt={friend.user.name} />
-                <AvatarFallback>{friend.user.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-medium">{friend.user.name}</p>
-                <p className="text-sm text-muted-foreground">{friend.user.email}</p>
+        {friends.map((friend) => {
+          const friendUser = friend.senderId === currentUser?.id ? friend.receiver : friend.sender;
+
+          return (
+            <div
+              key={friend.id}
+              className="flex items-center justify-between rounded-lg border p-4"
+            >
+              <div className="flex items-center gap-4">
+                <Avatar>
+                  <AvatarImage src={friendUser.avatar} alt={friendUser.name} />
+                  <AvatarFallback>{friendUser.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium">{friendUser.name}</p>
+                  <p className="text-sm text-muted-foreground">{friendUser.email}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <FriendActionButton status={FriendStatus.FRIENDS} />
               </div>
             </div>
-            <Button variant="outline" size="sm">
-              {t('friends:actions.message')}
-            </Button>
-          </div>
-        ))}
+          );
+        })}
       </CardContent>
     </Card>
   );

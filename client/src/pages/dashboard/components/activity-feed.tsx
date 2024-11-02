@@ -7,7 +7,13 @@ import { ActivityItem } from './activity-item';
 
 export function ActivityFeed() {
   const { t } = useTranslation(['dashboard']);
-  const { data, loading } = useQuery(GET_ACTIVITIES);
+  const { data, loading } = useQuery(GET_ACTIVITIES, {
+    variables: {
+      limit: 10,
+    },
+  });
+
+  const activities = data?.activities?.edges.map((edge: { node: Activity }) => edge.node) || [];
 
   return (
     <Card>
@@ -21,13 +27,13 @@ export function ActivityFeed() {
               <div key={i} className="h-16 animate-pulse rounded-lg bg-muted" />
             ))}
           </div>
-        ) : data?.activities.length === 0 ? (
+        ) : activities?.length === 0 ? (
           <p className="text-center text-sm text-muted-foreground">
             {t('dashboard:activity.empty')}
           </p>
         ) : (
           <div className="space-y-4">
-            {data?.activities.map((activity: Activity) => (
+            {activities?.map((activity: Activity) => (
               <ActivityItem key={activity.id} activity={activity} />
             ))}
           </div>

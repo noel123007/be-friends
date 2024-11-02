@@ -42,24 +42,23 @@
 
   "actions": {
     "add": "Add Friend",
-    "remove": "Remove Friend",
     "accept": "Accept",
-    "decline": "Decline",
-    "cancel": "Cancel Request",
-    "block": "Block User",
-    "unblock": "Unblock User",
-    "message": "Message",
-    "viewProfile": "View Profile"
+    "reject": "Reject",
+    "requested": "Request Sent",
+    "friends": "Friends",
+    "blocked": "Blocked",
+    "loading": "Loading...",
+    "adding": "Adding..."
   },
 
   "confirmations": {
-    "remove": {
+    "removing": {
       "title": "Remove Friend",
       "description": "Are you sure you want to remove {{name}} from your friends list?",
       "confirm": "Yes, remove",
       "cancel": "No, keep"
     },
-    "block": {
+    "blocking": {
       "title": "Block User",
       "description": "Are you sure you want to block {{name}}? They won't be able to see your profile or send you messages.",
       "confirm": "Yes, block",
@@ -73,7 +72,11 @@
     "requestDeclined": "Friend request declined",
     "friendRemoved": "{{name}} has been removed from your friends",
     "userBlocked": "{{name}} has been blocked",
-    "userUnblocked": "{{name}} has been unblocked"
+    "userUnblocked": "{{name}} has been unblocked",
+    "accepted": "Friend Request Accepted",
+    "acceptedDescription": "You are now friends!",
+    "rejected": "Friend Request Rejected",
+    "rejectedDescription": "Friend request has been rejected"
   },
 
   "errors": {
@@ -90,7 +93,9 @@
     "alreadyFriends": "You are already friends with this user",
     "requestPending": "Friend request already sent",
     "blocked": "You cannot add this user as a friend",
-    "maxFriends": "You have reached the maximum number of friends"
+    "maxFriends": "You have reached the maximum number of friends",
+    "acceptFailed": "Failed to accept friend request",
+    "rejectFailed": "Failed to reject friend request"
   },
 
   "aria": {

@@ -38,6 +38,7 @@ export default function App() {
                 <Route element={<DashboardLayout />}>
                   <Route path="/" element={<DashboardPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/profile/:userId" element={<ProfilePage />} />
                   <Route path="/friends" element={<FriendsPage />} />
                   <Route path="/chat" element={<ChatPage />} />
                   <Route path="/settings" element={<SettingsPage />} />

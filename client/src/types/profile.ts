@@ -33,7 +33,12 @@ export interface UpdateProfileInput {
   };
 }
 
+export enum ImageType {
+  AVATAR = 'AVATAR',
+  COVER = 'COVER',
+}
+
 export interface UploadImageInput {
   file: File;
-  type: 'avatar' | 'cover';
+  type: ImageType;
 }

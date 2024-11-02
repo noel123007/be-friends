@@ -7,7 +7,7 @@ import {
   SEND_FRIEND_REQUEST,
   UNBLOCK_USER,
 } from '@/graphql/friend';
-import type { FriendStatus, SearchUserResult } from '@/types/friend';
+import type { SearchUserResult } from '@/types/friend';
 import { useMutation } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 
@@ -47,26 +47,30 @@ export function UserCard({ user }: UserCardProps) {
     }
   };
 
-  const renderActionButton = (status?: FriendStatus) => {
-    switch (status) {
-      case 'PENDING':
-        return (
-          <div className="space-x-2">
-            <Button size="sm" onClick={() => handleAction('accept')}>
-              {t('friends:actions.accept')}
-            </Button>
-            <Button size="sm" variant="outline" onClick={() => handleAction('reject')}>
-              {t('friends:actions.reject')}
-            </Button>
-          </div>
-        );
+  const renderActionButton = (user: SearchUserResult) => {
+    // Handle friend request status first
+    if (user.friendStatus === 'PENDING') {
+      return (
+        <div className="space-x-2">
+          <Button size="sm" onClick={() => handleAction('accept')}>
+            {t('friends:actions.accept')}
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => handleAction('reject')}>
+            {t('friends:actions.reject')}
+          </Button>
+        </div>
+      );
+    }
+
+    // Then handle friend status
+    switch (user.friendStatus) {
       case 'BLOCKED':
         return (
           <Button size="sm" variant="outline" onClick={() => handleAction('unblock')}>
             {t('friends:actions.unblock')}
           </Button>
         );
-      case 'ACCEPTED':
+      case 'FRIENDS':
         return (
           <Button size="sm" variant="outline" onClick={() => handleAction('block')}>
             {t('friends:actions.block')}
@@ -93,7 +97,7 @@ export function UserCard({ user }: UserCardProps) {
           <p className="text-sm text-muted-foreground">{user.email}</p>
         </div>
       </div>
-      {renderActionButton(user.friendStatus)}
+      {renderActionButton(user)}
     </div>
   );
 }

@@ -21,9 +21,7 @@ export interface Notification {
 
 export interface NotificationPreferences {
   friendRequests: boolean;
-  messages: boolean;
   system: boolean;
-  emailNotifications: boolean;
 }
 
 export interface NotificationFilters {

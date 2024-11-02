@@ -14,8 +14,15 @@
     "retry": "Retry"
   },
   "errors": {
-    "generic": "An error occurred",
-    "required": "This field is required"
+    "title": "Error",
+    "required": "This field is required",
+    "generic": "Something went wrong. Please try again.",
+    "networkError": "Connection Error",
+    "checkConnection": "Please check your internet connection and try again.",
+    "invalidInput": "Please check your input and try again.",
+    "unauthorized": "You need to be logged in to perform this action.",
+    "forbidden": "You don't have permission to perform this action.",
+    "notFound": "The requested resource was not found."
   },
   "pages": {
     "dashboard": {

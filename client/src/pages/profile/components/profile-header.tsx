@@ -1,7 +1,8 @@
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { UPLOAD_PROFILE_IMAGE } from '@/graphql/profile';
+import { getDefaultCover, getInitialsAvatar } from '@/lib/utils/avatar';
 import type { Profile } from '@/types/profile';
+import { ImageType } from '@/types/profile';
 import { useMutation } from '@apollo/client';
 import { Camera } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -16,10 +17,7 @@ export function ProfileHeader({ profile, isOwnProfile }: ProfileHeaderProps) {
   const { toast } = useToast();
   const [uploadImage] = useMutation(UPLOAD_PROFILE_IMAGE);
 
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-    type: 'avatar' | 'cover'
-  ) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: ImageType) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -51,6 +49,9 @@ export function ProfileHeader({ profile, isOwnProfile }: ProfileHeaderProps) {
             type,
           },
         },
+        context: {
+          hasUpload: true,
+        },
       });
 
       toast({
@@ -71,7 +72,7 @@ export function ProfileHeader({ profile, isOwnProfile }: ProfileHeaderProps) {
       {/* Cover Image */}
       <div className="relative h-48 overflow-hidden rounded-t-lg md:h-64">
         <img
-          src={profile.coverImage || '/images/default-cover.jpg'}
+          src={profile.coverImage || getDefaultCover(profile.userId)}
           alt=""
           className="h-full w-full object-cover"
         />
@@ -82,7 +83,7 @@ export function ProfileHeader({ profile, isOwnProfile }: ProfileHeaderProps) {
               type="file"
               className="hidden"
               accept="image/*"
-              onChange={(e) => handleImageUpload(e, 'cover')}
+              onChange={(e) => handleImageUpload(e, ImageType.COVER)}
               aria-label={t('profile:actions.upload.cover')}
             />
           </label>
@@ -95,7 +96,7 @@ export function ProfileHeader({ profile, isOwnProfile }: ProfileHeaderProps) {
           <div className="relative">
             <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-background">
               <img
-                src={profile.avatar || '/images/default-avatar.jpg'}
+                src={profile.avatar || getInitialsAvatar(profile.name)}
                 alt={profile.name}
                 className="h-full w-full object-cover"
               />
@@ -107,7 +108,7 @@ export function ProfileHeader({ profile, isOwnProfile }: ProfileHeaderProps) {
                   type="file"
                   className="hidden"
                   accept="image/*"
-                  onChange={(e) => handleImageUpload(e, 'avatar')}
+                  onChange={(e) => handleImageUpload(e, ImageType.AVATAR)}
                   aria-label={t('profile:actions.upload.avatar')}
                 />
               </label>
@@ -118,11 +119,6 @@ export function ProfileHeader({ profile, isOwnProfile }: ProfileHeaderProps) {
         <div className="space-y-1">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">{profile.name}</h2>
-            {isOwnProfile && (
-              <Button variant="outline" size="sm">
-                {t('profile:actions.edit')}
-              </Button>
-            )}
           </div>
           {profile.bio && <p className="text-muted-foreground">{profile.bio}</p>}
         </div>

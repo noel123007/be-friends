@@ -27,25 +27,32 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const { toast } = useToast();
 
   // Fetch notifications
-  const { data, loading, error } = useQuery(GET_NOTIFICATIONS);
+  const { data, loading, error, refetch } = useQuery(GET_NOTIFICATIONS, {
+    variables: {
+      filters: {
+        isRead: false,
+      },
+    },
+  });
 
   // Mutations
   const [markNotificationRead] = useMutation(MARK_NOTIFICATION_READ);
 
   // Subscribe to new notifications
   useSubscription(NOTIFICATION_RECEIVED, {
-    onData: ({ data }) => {
-      if (data.data) {
-        toast({
-          title: data.data.notificationReceived.title,
-          description: data.data.notificationReceived.message,
-        });
-      }
+    onData: () => {
+      refetch();
     },
   });
 
   // Subscribe to notification updates
-  useSubscription(NOTIFICATION_UPDATED);
+  useSubscription(NOTIFICATION_UPDATED, {
+    onData: ({ data }) => {
+      if (data?.data?.notificationUpdated) {
+        refetch(); // Refetch when notification status changes
+      }
+    },
+  });
 
   const notifications = useMemo(() => data?.notifications || [], [data]);
 

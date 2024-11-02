@@ -6,13 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Add debounce utility
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function debounce<T extends (...args: any[]) => any>(func: T, wait: number) {
   let timeout: NodeJS.Timeout;
 
-  return function executedFunction(...args: Parameters<T>) {
+  const debouncedFn = function executedFunction(...args: Parameters<T>) {
     const later = () => {
       clearTimeout(timeout);
       func(...args);
@@ -21,4 +19,11 @@ export function debounce<T extends (...args: any[]) => any>(
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
+
+  // Add cancel method
+  debouncedFn.cancel = () => {
+    clearTimeout(timeout);
+  };
+
+  return debouncedFn;
 }

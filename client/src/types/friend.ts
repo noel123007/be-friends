@@ -1,18 +1,18 @@
-export type FriendStatus = 'PENDING' | 'ACCEPTED' | 'BLOCKED';
+export enum FriendStatus {
+  NONE = 'NONE',
+  PENDING = 'PENDING',
+  FRIENDS = 'FRIENDS',
+  BLOCKED = 'BLOCKED',
+}
 
 export interface Friend {
   id: string;
-  userId: string;
-  friendId: string;
+  senderId: string;
+  receiverId: string;
   status: FriendStatus;
   createdAt: string;
-  updatedAt: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    avatar?: string;
-  };
+  sender: User;
+  receiver: User;
 }
 
 export interface FriendRequest {
@@ -21,18 +21,18 @@ export interface FriendRequest {
   receiverId: string;
   status: FriendStatus;
   createdAt: string;
-  sender: {
-    id: string;
-    name: string;
-    email: string;
-    avatar?: string;
-  };
+  sender: User;
+  receiver: User;
 }
 
-export interface SearchUserResult {
+export interface User {
   id: string;
   name: string;
   email: string;
   avatar?: string;
-  friendStatus?: FriendStatus;
+  status?: FriendStatus;
+}
+
+export interface SearchUserResult extends User {
+  friendStatus: FriendStatus;
 }
