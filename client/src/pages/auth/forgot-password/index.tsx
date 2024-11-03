@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
-import { FORGOT_PASSWORD } from '@/graphql/auth';
+import { REQUEST_PASSWORD_RESET } from '@/graphql/auth';
 import type { ForgotPasswordInput } from '@/types/auth';
 import { useMutation } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,7 +19,7 @@ const forgotPasswordSchema = z.object({
 export function ForgotPasswordPage() {
   const { t } = useTranslation(['auth']);
   const { toast } = useToast();
-  const [forgotPassword, { loading }] = useMutation(FORGOT_PASSWORD);
+  const [requestPasswordReset, { loading }] = useMutation(REQUEST_PASSWORD_RESET);
 
   const {
     register,
@@ -31,11 +31,11 @@ export function ForgotPasswordPage() {
 
   const handleForgotPassword = async (data: ForgotPasswordInput) => {
     try {
-      const response = await forgotPassword({
+      const response = await requestPasswordReset({
         variables: { input: data },
       });
 
-      if (response.data?.forgotPassword.success) {
+      if (response.data?.requestPasswordReset.success) {
         toast({
           title: t('auth:forgotPassword.success.title'),
           description: t('auth:forgotPassword.success.description'),
@@ -87,5 +87,4 @@ export function ForgotPasswordPage() {
     </div>
   );
 }
-
 export default ForgotPasswordPage;

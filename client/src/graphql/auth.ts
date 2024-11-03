@@ -48,26 +48,13 @@ export const GET_CURRENT_USER = gql`
   }
 `;
 
-export const FORGOT_PASSWORD = gql`
-  mutation ForgotPassword($input: ForgotPasswordInput!) {
-    forgotPassword(input: $input) {
-      success
-      message
-    }
-  }
-`;
-
 export const RESET_PASSWORD = gql`
   mutation ResetPassword($input: ResetPasswordInput!) {
     resetPassword(input: $input) {
-      success
-      message
-      token
       user {
         id
-        name
         email
-        avatar
+        name
       }
     }
   }
@@ -77,6 +64,15 @@ export const VALIDATE_RESET_TOKEN = gql`
   query ValidateResetToken($token: String!) {
     validateResetToken(token: $token) {
       valid
+      message
+    }
+  }
+`;
+
+export const REQUEST_PASSWORD_RESET = gql`
+  mutation RequestPasswordReset($input: ForgotPasswordInput!) {
+    requestPasswordReset(input: $input) {
+      success
       message
     }
   }

@@ -75,20 +75,19 @@ export function FriendsList({ data }: FriendsListProps) {
           return (
             <div
               key={friend.id}
-              className="flex items-center justify-between rounded-lg border p-4"
+              className="flex flex-col items-start justify-between space-y-4 rounded-lg border p-4 sm:flex-row sm:items-center sm:space-y-0"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex w-full items-center gap-4 sm:w-auto">
                 <Avatar>
                   <AvatarImage src={friendUser.avatar} alt={friendUser.name} />
                   <AvatarFallback>{friendUser.name.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="font-medium">{friendUser.name}</p>
-                  <p className="text-sm text-muted-foreground">{friendUser.email}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium">{friendUser.name}</p>
+                  <p className="truncate text-sm text-muted-foreground">{friendUser.email}</p>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <FriendActionButton status={FriendStatus.FRIENDS} />
+              <div className="flex w-full justify-end sm:w-auto">
                 <FriendActionButton
                   status={FriendStatus.FRIENDS}
                   onClick={() => handleRemoveFriend(friend.id)}

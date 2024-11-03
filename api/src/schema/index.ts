@@ -234,11 +234,11 @@ const baseTypeDefs = `
     markAllNotificationsRead: SuccessResponse!
     updateNotificationPreferences(
       input: NotificationPreferencesInput!
-    ): NotificationPreferences!
-    forgotPassword(input: ForgotPasswordInput!): SuccessResponse!
+    ): NotificationPreferences! 
     resetPassword(input: ResetPasswordInput!): AuthPayload!
     removeFriend(friendId: ID!): MutationResponse!
     unsendFriendRequest(requestId: ID!): MutationResponse!
+    requestPasswordReset(input: ForgotPasswordInput!): MutationResponse! 
   }
 
   type Subscription {

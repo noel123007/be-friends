@@ -8,7 +8,17 @@ Frontend: https://be-friends-rho.vercel.app
 
 Backend: https://be-friends.onrender.com/graphql
 
-Unfortunatley, could not deploy the backend using Docker due to time constraints. However, docker-compose is configured and ready to use.
+> **Note:** Backend deployment with Docker is pending due to time constraints. Docker-compose configuration is ready and available for local development.
+
+> **Info:** To test the reset password flow:
+>
+> 1. Visit https://ethereal.email/messages
+> 2. Click on the reset password link in the email
+>
+> **Login credentials if needed:**
+>
+> - Email: blaze.metz@ethereal.email
+> - Password: urBJbyzJ4ZDAMqJFB8
 
 ## Features
 
@@ -18,7 +28,7 @@ Unfortunatley, could not deploy the backend using Docker due to time constraints
 - Secure password hashing with bcrypt
 - Protected routes and API endpoints
 - Rate limiting and security headers
-- Password reset functionality (only UI for now)
+- Password reset functionality
 - Form validation with Zod
 
 ### User Management
@@ -35,7 +45,6 @@ Unfortunatley, could not deploy the backend using Docker due to time constraints
 - Friend list management
 - Activity feed with real-time updates
 - Real-time notifications
-- User presence system
 
 ### UI/UX
 

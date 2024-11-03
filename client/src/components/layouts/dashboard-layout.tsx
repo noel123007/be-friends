@@ -62,7 +62,7 @@ export function DashboardLayout() {
           <NavigationMenu className="flex-1 px-3 py-4">
             <ul className="space-y-1">
               {navigationItems.map((item) => (
-                <li key={item.href}>
+                <li key={item.href} onClick={() => isMobileMenuOpen && setIsMobileMenuOpen(false)}>
                   <Link
                     to={item.href}
                     className="flex items-center rounded-lg px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"

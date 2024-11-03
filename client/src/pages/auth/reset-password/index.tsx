@@ -7,25 +7,11 @@ import { RESET_PASSWORD, VALIDATE_RESET_TOKEN } from '@/graphql/auth';
 import type { ResetPasswordInput } from '@/types/auth';
 import { useMutation, useQuery } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
-
-const resetPasswordSchema = z
-  .object({
-    password: z
-      .string()
-      .min(6, 'auth:resetPassword.validation.password.minLength')
-      .max(50, 'auth:resetPassword.validation.password.maxLength')
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'auth:resetPassword.validation.password.pattern'),
-    confirmPassword: z.string(),
-    token: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'auth:resetPassword.validation.confirmPassword.match',
-    path: ['confirmPassword'],
-  });
 
 export function ResetPasswordPage() {
   const { t } = useTranslation(['auth']);
@@ -33,6 +19,29 @@ export function ResetPasswordPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
+
+  const resetPasswordSchema = useMemo(
+    () =>
+      z
+        .object({
+          password: z
+            .string()
+            .min(6, t('auth:resetPassword.validation.password.minLength'))
+            .max(50, t('auth:resetPassword.validation.password.maxLength'))
+            .regex(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+              t('auth:resetPassword.validation.password.pattern')
+            ),
+          confirmPassword: z.string(),
+          token: z.string(),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+          message: t('auth:resetPassword.validation.confirmPassword.match'),
+          path: ['confirmPassword'],
+        }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   // Validate token
   const { loading: validating } = useQuery(VALIDATE_RESET_TOKEN, {
@@ -78,8 +87,10 @@ export function ResetPasswordPage() {
 
   const handleResetPassword = async (data: ResetPasswordInput) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword, ...rest } = data;
       const response = await resetPassword({
-        variables: { input: data },
+        variables: { input: rest },
       });
 
       if (response.data?.resetPassword.success) {
@@ -171,5 +182,4 @@ export function ResetPasswordPage() {
     </div>
   );
 }
-
 export default ResetPasswordPage;

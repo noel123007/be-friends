@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
 import { AppError } from "../common/errors/AppError";
 import {
+  forgotPasswordSchema,
   loginSchema,
   registerSchema,
   resetPasswordSchema,
@@ -9,6 +10,7 @@ import {
   type RegisterInput,
   type ResetPasswordInput,
 } from "../schema/validation/auth";
+import { emailService } from '../services/email';
 import { Context } from "../types";
 import { NotificationType } from '../types/enums';
 import { logger } from "../util/logger";
@@ -195,6 +197,55 @@ export const authResolvers = {
           throw AppError.badRequest("Invalid or expired token");
         }
         throw error;
+      }
+    },
+
+    async requestPasswordReset(_: unknown, input: any, { models }: Context) {
+      try {
+        const validatedInput = await validate(forgotPasswordSchema, input);
+        const { email } = validatedInput.input;
+
+        const user = await models.User.findOne({ email })
+        
+        if (!user) {
+          // Return success even if user not found to prevent email enumeration
+          return {
+            success: true,
+            message: "If an account exists, you will receive a reset email"
+          }
+        }
+
+        const secret = process.env.JWT_SECRET
+        if (!secret) throw new AppError(500, "JWT secret not configured")
+
+        // Create reset token valid for 1 hour
+        const resetToken = jwt.sign(
+          { userId: user._id },
+          secret,
+          { expiresIn: '1h' }
+        )
+
+        const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`
+
+        await emailService.sendEmail({
+          to: email,
+          subject: 'Password Reset Request',
+          html: `
+            <p>You requested a password reset.</p>
+            <p>Click this <a href="${resetUrl}">link</a> to reset your password.</p>
+            <p>This link will expire in 1 hour.</p>
+          `
+        })
+
+        logger.info('Password reset email sent', { userId: user._id })
+
+        return {
+          success: true,
+          message: "Reset instructions sent to your email"
+        }
+      } catch (error) {
+        logger.error('Password reset request error:', error)
+        throw error
       }
     },
   },
