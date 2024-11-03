@@ -210,7 +210,7 @@ export const profileResolvers = {
                 await models.Activity.create({
                     userId: user.id,
                     type: ActivityType.PROFILE_UPDATE,
-                    message: `updated their ${type.toLowerCase()}`,
+                    message: `updated ${type.toLowerCase()} image`,
                 });
 
                 pubsub.publish(`PROFILE_UPDATED_${user.id}`, {

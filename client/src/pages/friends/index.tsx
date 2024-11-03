@@ -28,6 +28,19 @@ export function FriendsPage() {
     refetch: refetchRequests,
   } = useQuery(GET_FRIEND_REQUESTS);
 
+  const handleTabChange = (value: string) => {
+    if (value === 'requests') {
+      refetchRequests();
+      return;
+    }
+
+    if (value === 'search') {
+      return;
+    }
+
+    refetchFriends();
+  };
+
   if (isTitle) return t('friends:title');
 
   if (friendsLoading || requestsLoading) {
@@ -52,7 +65,7 @@ export function FriendsPage() {
     <div className="space-y-6">
       <PageHeader title={t('friends:title')} description={t('friends:description')} />
 
-      <Tabs defaultValue="list">
+      <Tabs defaultValue="list" onValueChange={handleTabChange}>
         <TabsList>
           <TabsTrigger value="list">{t('friends:tabs.list')}</TabsTrigger>
           <TabsTrigger value="requests">

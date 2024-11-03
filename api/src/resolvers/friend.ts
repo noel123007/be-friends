@@ -135,6 +135,65 @@ export const friendResolvers = {
       }
     },
 
+    sentRequests: async (_: unknown, args: unknown, { models, user }: Context) => {
+      if (!user) throw AppError.unauthorized()
+
+      try {
+        const { cursor, limit = 10 } = await validate(friendPaginationSchema, args)
+
+        const query: any = {
+          senderId: user.id,
+          status: FriendStatus.PENDING
+        }
+
+        if (cursor) {
+          query._id = { $lt: new Types.ObjectId(cursor) }
+        }
+
+        const requests = await models.Friend
+          .find(query)
+          .sort({ _id: -1 })
+          .limit(limit + 1)
+          .populate('receiverId', '-password')
+          .lean<PopulatedFriendRequest[]>()   
+
+        const hasNextPage = requests.length > limit
+        const edges = requests.slice(0, limit).map((request) => ({
+          node: {
+            id: request._id.toString(),
+            senderId: request.senderId._id.toString(),
+            receiverId: request.receiverId._id.toString(),
+            status: request.status,
+            createdAt: request.createdAt,
+            receiver: {
+              id: request.receiverId._id.toString(),
+              name: request.receiverId.name,
+              email: request.receiverId.email,
+              avatar: request.receiverId.avatar
+            }
+          },
+          cursor: request._id.toString()
+        })) 
+
+        logger.info('Fetch sent requests', {
+          userId: user.id,
+          count: edges.length,
+          hasNextPage,
+        })
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage,
+            endCursor: edges[edges.length - 1]?.cursor
+          }
+        }
+      } catch (error) {
+        logger.error('Fetch sent requests error:', error)
+        throw error
+      } 
+    },
+
     friendRequests: async (
       _: unknown,
       args: unknown,
@@ -284,10 +343,17 @@ export const friendResolvers = {
           senderId: user.id,
           receiverId: userId,
           status: FriendStatus.PENDING
-        })
+        }) 
 
-        // Populate sender information
-        await friendRequest.populate('senderId', '-password')
+        const request = await models.Friend
+            .findOne({ _id: friendRequest._id })
+            .populate('receiverId', '-password')
+            .populate('senderId', '-password')
+            .lean<PopulatedFriendRequest>()
+
+        if (!request) {
+          throw AppError.notFound('Friend request not found')
+        }
 
         // Create activity
         await models.Activity.create({
@@ -303,7 +369,19 @@ export const friendResolvers = {
           senderId: friendRequest.senderId._id.toString(), // Convert ObjectId to string
           receiverId: friendRequest.receiverId.toString(),
           status: friendRequest.status,
-          createdAt: friendRequest.createdAt
+          createdAt: friendRequest.createdAt,
+          sender: {
+            id: request.senderId._id.toString(),
+            name: request.senderId.name,
+            email: request.senderId.email,
+            avatar: request.senderId.avatar
+          },
+          receiver: {
+            id: request.receiverId._id.toString(),
+            name: request.receiverId.name,
+            email: request.receiverId.email,
+            avatar: request.receiverId.avatar
+          }
         }
 
         pubsub.publish('FRIEND_UPDATED', { friendUpdated: response })
@@ -382,7 +460,7 @@ export const friendResolvers = {
 
         // Send notification to sender
         await sendNotification({
-          userId: request.senderId.toString(),
+          userId: request.senderId._id.toString(),
           type: NotificationType.FRIEND_ACCEPT,
           title: 'Friend Request Accepted',
           message: `${user.name} accepted your friend request`,
@@ -433,6 +511,98 @@ export const friendResolvers = {
         }
       } catch (error) {
         logger.error('Reject friend request error:', error)
+        throw error
+      }
+    },
+
+    removeFriend: async (
+      _: unknown,
+      { friendId }: { friendId: string },
+      { models, user, pubsub }: Context
+    ) => {
+      if (!user) throw AppError.unauthorized()
+
+      try {
+        const friendship = await models.Friend.findOne({
+          _id: new Types.ObjectId(friendId),
+          $or: [
+            { senderId: user.id },
+            { receiverId: user.id }
+          ],
+          status: FriendStatus.FRIENDS
+        }).populate(['senderId', 'receiverId'])
+
+        if (!friendship) {
+          throw AppError.notFound('Friendship not found')
+        }
+
+        // Remove the friendship
+        await friendship.deleteOne()
+
+        // Publish subscription update
+        pubsub.publish('FRIEND_UPDATED', {
+          friendUpdated: {
+            ...friendship.toObject(),
+            status: FriendStatus.NONE
+          }
+        })
+
+        return {
+          success: true,
+          message: 'Friend removed successfully'
+        }
+      } catch (error) {
+        logger.error('Remove friend error:', error)
+        throw error
+      }
+    },
+
+    unsendFriendRequest: async (
+      _: unknown,
+      { requestId }: { requestId: string },
+      { models, user, pubsub }: Context
+    ) => {
+      if (!user) throw AppError.unauthorized()
+
+      try {
+        const request = await models.Friend.findOne({
+          _id: new Types.ObjectId(requestId),
+          senderId: user.id,
+          status: FriendStatus.PENDING
+        }).populate('receiverId')
+
+        if (!request) {
+          throw AppError.notFound('Friend request not found')
+        }
+
+        // Start a session for transaction
+        const session = await models.Friend.startSession()
+        await session.withTransaction(async () => {
+          // Remove the friend request
+          await request.deleteOne({ session })
+
+          // Remove related notifications
+          await models.Notification.deleteMany({
+            type: NotificationType.FRIEND_REQUEST, 
+            userId: request.receiverId._id
+          }, { session })
+        })
+        await session.endSession()
+
+        // Publish subscription update
+        pubsub.publish('FRIEND_UPDATED', {
+          friendUpdated: {
+            ...request.toObject(),
+            status: FriendStatus.NONE
+          }
+        })
+
+        return {
+          success: true,
+          message: 'Friend request cancelled'
+        }
+      } catch (error) {
+        logger.error('Unsend friend request error:', error)
         throw error
       }
     }

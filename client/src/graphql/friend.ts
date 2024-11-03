@@ -164,3 +164,46 @@ export const FRIEND_UPDATED = gql`
     }
   }
 `;
+
+export const REMOVE_FRIEND = gql`
+  mutation RemoveFriend($friendId: ID!) {
+    removeFriend(friendId: $friendId) {
+      success
+      message
+    }
+  }
+`;
+
+export const UNSEND_FRIEND_REQUEST = gql`
+  mutation UnsendFriendRequest($requestId: ID!) {
+    unsendFriendRequest(requestId: $requestId) {
+      success
+      message
+    }
+  }
+`;
+
+export const GET_SENT_REQUESTS = gql`
+  query GetSentRequests {
+    sentRequests {
+      edges {
+        node {
+          id
+          status
+          receiver {
+            id
+            name
+            email
+            avatar
+          }
+          createdAt
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+`;

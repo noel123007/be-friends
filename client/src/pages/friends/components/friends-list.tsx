@@ -1,9 +1,12 @@
 import { FriendActionButton } from '@/components/friend-action-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from '@/components/ui/use-toast';
+import { GET_FRIENDS, REMOVE_FRIEND } from '@/graphql/friend';
 import { useAuth } from '@/providers/auth-provider';
 import type { Friend } from '@/types/friend';
 import { FriendStatus } from '@/types/friend';
+import { useMutation } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 
 interface FriendsListProps {
@@ -25,6 +28,30 @@ export function FriendsList({ data }: FriendsListProps) {
   const { t } = useTranslation(['friends']);
   const { user: currentUser } = useAuth();
   const friends = data?.friends.edges.map((edge) => edge.node) || [];
+
+  const [removeFriend, { loading: removing }] = useMutation(REMOVE_FRIEND, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onError: (error) => {
+      toast({
+        title: t('friends:errors.removeFailed'),
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const handleRemoveFriend = async (friendId: string) => {
+    try {
+      await removeFriend({ variables: { friendId } });
+      toast({
+        title: t('friends:success.removed'),
+        description: t('friends:success.removedDescription'),
+      });
+    } catch (error) {
+      // Error handled by mutation error callback
+      console.error(error);
+    }
+  };
 
   if (friends.length === 0) {
     return (
@@ -62,6 +89,12 @@ export function FriendsList({ data }: FriendsListProps) {
               </div>
               <div className="flex gap-2">
                 <FriendActionButton status={FriendStatus.FRIENDS} />
+                <FriendActionButton
+                  status={FriendStatus.FRIENDS}
+                  onClick={() => handleRemoveFriend(friend.id)}
+                  loading={removing}
+                  label={t('friends:actions.remove')}
+                />
               </div>
             </div>
           );

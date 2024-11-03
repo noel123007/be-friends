@@ -1,3 +1,4 @@
+import { FriendStatus } from "@/types/enums";
 import { Types } from "mongoose";
 import { AppError } from "../common/errors/AppError";
 import { IActivity } from "../models/Activity";
@@ -30,7 +31,27 @@ export const activityResolvers = {
           args
         );
 
-        const query: any = {};
+        // Find all friends of the user
+        const friendships = await models.Friend
+          .find({
+            $or: [
+              { senderId: user.id, status: FriendStatus.FRIENDS },
+              { receiverId: user.id, status: FriendStatus.FRIENDS } 
+            ]
+          })
+          .lean();
+
+        // Extract friend IDs
+        const friendIds = friendships.map(friendship => 
+          friendship.senderId.toString() === user.id 
+            ? friendship.receiverId 
+            : friendship.senderId
+        );
+
+        // Build query to include user's and friends' activities
+        const query: any = {
+          userId: { $in: [new Types.ObjectId(user.id), ...friendIds] }
+        };
 
         if (cursor) {
           query._id = { $lt: new Types.ObjectId(cursor) };
@@ -64,6 +85,13 @@ export const activityResolvers = {
           },
           cursor: activity._id.toString()
         }));
+
+        logger.info('Fetch user and friends activities', {
+          userId: user.id,
+          friendsCount: friendIds.length,
+          activitiesCount: edges.length,
+          hasNextPage
+        });
 
         return {
           edges,

@@ -2,16 +2,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GET_ACTIVITIES } from '@/graphql/activity';
 import { Activity } from '@/types/activity';
 import { useQuery } from '@apollo/client';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityItem } from './activity-item';
 
 export function ActivityFeed() {
   const { t } = useTranslation(['dashboard']);
-  const { data, loading } = useQuery(GET_ACTIVITIES, {
+  const { data, loading, refetch } = useQuery(GET_ACTIVITIES, {
     variables: {
       limit: 10,
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const activities = data?.activities?.edges.map((edge: { node: Activity }) => edge.node) || [];
 

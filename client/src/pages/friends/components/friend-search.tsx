@@ -54,9 +54,9 @@ export function FriendSearch() {
             query: SEARCH_USERS,
             variables: { query },
             data: {
-              searchUsers: existingData.searchUsers.map((user) =>
-                user.id === userId ? { ...user, friendStatus: 'PENDING' } : user
-              ),
+              searchUsers: existingData.searchUsers.map((user) => {
+                return user.id === userId ? { ...user, friendStatus: 'PENDING' } : user;
+              }),
             },
           });
         },

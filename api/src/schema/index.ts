@@ -203,6 +203,7 @@ const baseTypeDefs = `
     searchUsers(query: String!): [User!]!
     friends(cursor: String, limit: Int): FriendConnection!
     friendRequests(cursor: String, limit: Int): FriendRequestConnection!
+    sentRequests(cursor: String, limit: Int): FriendRequestConnection!
     activities(
       cursor: String
       limit: Int
@@ -226,7 +227,7 @@ const baseTypeDefs = `
     uploadProfileImage(input: UploadImageInput!): Profile!
     sendFriendRequest(userId: ID!): FriendRequest!
     acceptFriendRequest(requestId: ID!): FriendRequest!
-    rejectFriendRequest(requestId: ID!): FriendRequest!
+    rejectFriendRequest(requestId: ID!): MutationResponse!
     blockUser(userId: ID!): Friend!
     unblockUser(userId: ID!): Friend!
     markNotificationRead(id: ID!): Notification!
@@ -236,6 +237,8 @@ const baseTypeDefs = `
     ): NotificationPreferences!
     forgotPassword(input: ForgotPasswordInput!): SuccessResponse!
     resetPassword(input: ResetPasswordInput!): AuthPayload!
+    removeFriend(friendId: ID!): MutationResponse!
+    unsendFriendRequest(requestId: ID!): MutationResponse!
   }
 
   type Subscription {
@@ -267,6 +270,11 @@ const baseTypeDefs = `
   }
 
   type SuccessResponse {
+    success: Boolean!
+    message: String!
+  }
+
+  type MutationResponse {
     success: Boolean!
     message: String!
   }

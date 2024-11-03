@@ -28,7 +28,10 @@
     "received": "Request received",
     "pending": "Pending",
     "accepted": "Accepted",
-    "declined": "Declined"
+    "declined": "Declined",
+    "unsent": "Unsent",
+    "noReceived": "No received requests",
+    "noSent": "No sent requests"
   },
 
   "search": {
@@ -48,7 +51,10 @@
     "friends": "Friends",
     "blocked": "Blocked",
     "loading": "Loading...",
-    "adding": "Adding..."
+    "adding": "Adding...",
+    "removing": "Removing...",
+    "remove": "Remove",
+    "unsend": "Unsend"
   },
 
   "confirmations": {
@@ -76,14 +82,17 @@
     "accepted": "Friend Request Accepted",
     "acceptedDescription": "You are now friends!",
     "rejected": "Friend Request Rejected",
-    "rejectedDescription": "Friend request has been rejected"
+    "rejectedDescription": "Friend request has been rejected",
+    "removed": "Friend removed",
+    "removedDescription": "You are no longer friends with this user",
+    "unsent": "Request unsent",
+    "unsentDescription": "Friend request has been cancelled"
   },
 
   "errors": {
     "loadFailed": "Failed to load friends",
     "searchFailed": "Failed to search users",
     "requestFailed": "Failed to send friend request",
-    "acceptFailed": "Failed to accept friend request",
     "declineFailed": "Failed to decline friend request",
     "removeFailed": "Failed to remove friend",
     "blockFailed": "Failed to block user",
@@ -95,7 +104,8 @@
     "blocked": "You cannot add this user as a friend",
     "maxFriends": "You have reached the maximum number of friends",
     "acceptFailed": "Failed to accept friend request",
-    "rejectFailed": "Failed to reject friend request"
+    "rejectFailed": "Failed to reject friend request",
+    "unsendFailed": "Failed to unsend request"
   },
 
   "aria": {

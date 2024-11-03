@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAuth } from '@/providers/auth-provider';
 import type { Activity } from '@/types/activity';
 import { formatDistanceToNow } from 'date-fns';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +11,7 @@ interface ActivityItemProps {
 
 export function ActivityItem({ activity }: ActivityItemProps) {
   const { t } = useTranslation(['dashboard']);
-
+  const { user } = useAuth();
   const getActivityMessage = (activity: Activity) => {
     const baseMessage = t(`dashboard:activity.types.${activity.type}`);
     return activity.message || baseMessage;
@@ -38,7 +39,7 @@ export function ActivityItem({ activity }: ActivityItemProps) {
       <div className="flex-1 space-y-1">
         <p className="text-sm">
           <Link to={`/profile/${activity.user.id}`} className="font-medium hover:underline">
-            {activity.user.name}
+            {activity.user.id === user?.id ? 'You' : activity.user.name}
           </Link>{' '}
           {getActivityMessage(activity)}
         </p>
