@@ -5,6 +5,7 @@ import { authResolvers } from "./auth";
 import { friendResolvers } from "./friend";
 import { notificationResolvers } from "./notification";
 import { profileResolvers } from "./profile";
+import { tweetResolvers } from "./tweet";
 import { userResolvers } from "./user";
 
 export const resolvers = {
@@ -21,6 +22,7 @@ export const resolvers = {
     ...activityResolvers.Query,
     ...notificationResolvers.Query,
     ...profileResolvers.Query,
+    ...tweetResolvers.Query,
   },
 
   Mutation: {
@@ -28,6 +30,7 @@ export const resolvers = {
     ...friendResolvers.Mutation,
     ...notificationResolvers.Mutation,
     ...profileResolvers.Mutation,
+    ...tweetResolvers.Mutation,
   },
 
   Subscription: {

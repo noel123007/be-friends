@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 import { ActivityFeed } from './components/activity-feed';
 import { FriendsPreview } from './components/friends-preview';
+import { TweetComposer } from './components/tweet-composer';
+import { TweetsFeed } from './components/tweets-feed';
 import { WelcomeSection } from './components/welcome-section';
 
 export function DashboardPage() {
@@ -16,15 +18,22 @@ export function DashboardPage() {
       <PageHeader title={t('dashboard:title')} description={t('dashboard:description')} />
 
       <div className="grid gap-6 lg:grid-cols-7">
-        {/* Main Content - 5 columns */}
+        {/* Main Content - 5 columns on desktop */}
         <div className="space-y-6 lg:col-span-5">
-          <WelcomeSection />
-          <ActivityFeed />
+          {/* Welcome Section - Only visible on mobile */}
+          <div className="lg:hidden">
+            <WelcomeSection />
+          </div>
+
+          <TweetComposer />
+          <TweetsFeed />
         </div>
 
-        {/* Sidebar - 2 columns */}
-        <div className="lg:col-span-2">
+        {/* Sidebar - 2 columns on desktop, hidden on mobile */}
+        <div className="hidden space-y-6 lg:col-span-2 lg:block">
+          <WelcomeSection />
           <FriendsPreview />
+          <ActivityFeed />
         </div>
       </div>
     </div>

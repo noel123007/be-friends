@@ -178,6 +178,7 @@ const baseTypeDefs = `
     FRIEND_ACCEPT
     PROFILE_UPDATE
     SYSTEM
+    TWEET_CREATED
   }
 
   enum FriendStatus {
@@ -192,6 +193,7 @@ const baseTypeDefs = `
     FRIEND_ACCEPT
     SYSTEM
     MESSAGE
+    TWEET_CREATED
   }
 
   scalar DateTime
@@ -218,6 +220,8 @@ const baseTypeDefs = `
     notifications(filters: NotificationFilters): [Notification!]!
     notificationPreferences: NotificationPreferences!
     validateResetToken(token: String!): ResetTokenValidation!
+    tweets(cursor: String, limit: Int): TweetConnection!
+    tweet(id: ID!): Tweet
   }
 
   type Mutation {
@@ -239,6 +243,10 @@ const baseTypeDefs = `
     removeFriend(friendId: ID!): MutationResponse!
     unsendFriendRequest(requestId: ID!): MutationResponse!
     requestPasswordReset(input: ForgotPasswordInput!): MutationResponse! 
+    createTweet(input: CreateTweetInput!): CreateTweetResponse!
+    deleteTweet(id: ID!): MutationResponse!
+    likeTweet(id: ID!): MutationResponse!
+    unlikeTweet(id: ID!): MutationResponse!
   }
 
   type Subscription {
@@ -277,6 +285,36 @@ const baseTypeDefs = `
   type MutationResponse {
     success: Boolean!
     message: String!
+  }
+
+  type Tweet {
+    id: ID!
+    content: String!
+    author: User!
+    likes: Int!
+    isLiked: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
+  type TweetEdge {
+    node: Tweet!
+    cursor: String!
+  }
+
+  type TweetConnection {
+    edges: [TweetEdge!]!
+    pageInfo: PageInfo!
+  }
+
+  input CreateTweetInput {
+    content: String!
+  }
+
+  type CreateTweetResponse {
+    success: Boolean!
+    message: String!
+    tweet: Tweet!
   }
 `;
 

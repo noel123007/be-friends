@@ -1,11 +1,10 @@
 {
   "title": "Dashboard",
-  "description": "Overview of your activity and connections",
+  "description": "Welcome to your dashboard",
 
   "welcome": {
     "greeting": "Welcome back, {{name}}!",
-    "lastLogin": "Last login {{time}}",
-    "today": "Here's what's happening today"
+    "lastLogin": "Last login {{time}} ago"
   },
 
   "activity": {
@@ -13,6 +12,7 @@
     "empty": "No recent activity",
     "loading": "Loading activities...",
     "error": "Failed to load activities",
+    "viewAll": "View all",
     "types": {
       "FRIEND_REQUEST": "sent you a friend request",
       "FRIEND_ACCEPTED": "accepted your friend request",
@@ -46,5 +46,34 @@
 
   "actions": {
     "logout": "Logout"
+  },
+
+  "tweet": {
+    "title": "Share your thoughts",
+    "placeholder": "What's on your mind?",
+    "post": "Post",
+    "posting": "Posting...",
+    "success": "Tweet posted",
+    "successDescription": "Your tweet has been posted successfully",
+    "error": "Error posting tweet",
+    "errorUnknown": "An unknown error occurred",
+    "ariaLabel": "Tweet content input",
+    "validation": {
+      "tooLong": "Tweet must be less than 280 characters",
+      "required": "Tweet content is required"
+    }
+  },
+
+  "tweets": {
+    "title": "Latest Tweets",
+    "loading": "Loading more tweets...",
+    "loadMore": "Load more",
+    "empty": "No tweets yet",
+    "likeError": "Error liking tweet",
+    "likeErrorUnknown": "Failed to update like status",
+    "delete": "Delete tweet",
+    "deleteConfirm": "Are you sure you want to delete this tweet?",
+    "deleteSuccess": "Tweet deleted successfully",
+    "deleteError": "Failed to delete tweet"
   }
 }

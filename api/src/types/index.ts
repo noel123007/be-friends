@@ -6,6 +6,7 @@ import { Notification } from "../models/Notification";
 import { NotificationPreferences } from "../models/NotificationPreferences";
 import { Profile } from "../models/Profile";
 import { User } from "../models/User";
+import { Tweet } from "../models/tweet";
 
 // Define model types
 export interface Models {
@@ -15,6 +16,7 @@ export interface Models {
   Profile: typeof Profile;
   Notification: typeof Notification;
   NotificationPreferences: typeof NotificationPreferences;
+  Tweet: typeof Tweet;
 }
 
 export interface Context {

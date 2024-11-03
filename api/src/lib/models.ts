@@ -3,6 +3,7 @@ import { Friend } from "../models/Friend"
 import { Notification } from "../models/Notification"
 import { NotificationPreferences } from "../models/NotificationPreferences"
 import { Profile } from "../models/Profile"
+import { Tweet } from "../models/tweet"
 import { User } from "../models/User"
 import { Models } from "../types"
 
@@ -14,7 +15,8 @@ export function getTypedModels(): Models {
     Activity,
     Profile,
     Notification,
-    NotificationPreferences
+    NotificationPreferences,
+    Tweet
   }
 
   return models
