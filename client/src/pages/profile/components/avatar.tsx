@@ -1,4 +1,5 @@
-import { UPLOAD_AVATAR } from '@/graphql/profile';
+import { useToast } from '@/components/ui/use-toast';
+import { UPLOAD_PROFILE_IMAGE } from '@/graphql/profile';
 import type { Profile } from '@/types/profile';
 import { useMutation } from '@apollo/client';
 import { Camera } from 'lucide-react';
@@ -17,23 +18,29 @@ const sizeClasses = {
 
 export function Avatar({ profile, size = 'medium' }: AvatarProps) {
   const { t } = useTranslation(['profile']);
-  const [uploadAvatar] = useMutation(UPLOAD_AVATAR);
+  const [uploadImage] = useMutation(UPLOAD_PROFILE_IMAGE);
+  const { toast } = useToast();
 
   const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     try {
-      await uploadAvatar({
-        variables: { file },
-        update: (cache, { data }) => {
-          cache.modify({
-            id: cache.identify({ __typename: 'Profile', id: profile.id }),
-            fields: {
-              avatar: () => data.uploadAvatar.url,
-            },
-          });
+      await uploadImage({
+        variables: {
+          input: {
+            file,
+            type: 'AVATAR',
+          },
         },
+        context: {
+          hasUpload: true,
+        },
+      });
+
+      toast({
+        title: t('profile:success.imageUpload'),
+        description: t('profile:success.imageUploadDescription'),
       });
     } catch (error) {
       console.error('Failed to upload avatar:', error);
