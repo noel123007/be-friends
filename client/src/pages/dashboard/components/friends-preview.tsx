@@ -1,10 +1,9 @@
-import { FriendActionButton } from '@/components/friend-action-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GET_FRIENDS } from '@/graphql/friend';
 import { useAuth } from '@/providers/auth-provider';
-import { Friend, FriendStatus } from '@/types/friend';
+import { Friend } from '@/types/friend';
 import { useQuery } from '@apollo/client';
 import { Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -63,7 +62,6 @@ export function FriendsPreview() {
                       <p className="text-sm text-muted-foreground">{friendUser.email}</p>
                     </div>
                   </Link>
-                  <FriendActionButton status={FriendStatus.FRIENDS} size="sm" />
                 </div>
               );
             })}

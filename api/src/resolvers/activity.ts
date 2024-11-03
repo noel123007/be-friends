@@ -9,9 +9,11 @@ import { validate } from "../util/validate";
 
 interface PopulatedActivity extends Omit<IActivity, 'userId'> {
   userId: {
-    _id: Types.ObjectId;
+    userId: {
+      _id: Types.ObjectId;
     name: string;
     email: string;
+    };
     avatar?: string;
   };
 }
@@ -65,9 +67,22 @@ export const activityResolvers = {
           .find(query)
           .sort({ _id: -1 })
           .limit(limit + 1)
-          .populate('userId', '-password')
-          .lean<PopulatedActivity[]>();
-
+          .populate({
+            path: 'userId',
+            select: 'avatar',
+            model: 'Profile',
+            foreignField: 'userId',
+            localField: '_id',
+            populate: {
+              path: 'userId', 
+              model: 'User', 
+              select: 'name email', 
+              foreignField: '_id', 
+              localField: 'userId', 
+              strictPopulate: false
+            }
+          }) as unknown as PopulatedActivity[]
+        
         const hasNextPage = activities.length > limit;
         const edges = activities.slice(0, limit).map((activity) => ({
           node: {
@@ -77,9 +92,9 @@ export const activityResolvers = {
             data: activity.data,
             createdAt: activity.createdAt,
             user: {
-              id: activity.userId._id.toString(),
-              name: activity.userId.name,
-              email: activity.userId.email,
+              id: activity.userId.userId._id.toString(),
+              name: activity.userId.userId.name,
+              email: activity.userId.userId.email,
               avatar: activity.userId.avatar
             }
           },
@@ -133,8 +148,21 @@ export const activityResolvers = {
           .find(query)
           .sort({ _id: -1 })
           .limit(limit + 1)
-          .populate('userId', '-password')
-          .lean<PopulatedActivity[]>();
+          .populate({ 
+            path: 'userId',
+            select: 'avatar',
+            model: 'Profile',
+            foreignField: 'userId',
+            localField: '_id',
+            populate: {
+              path: 'userId', 
+              model: 'User', 
+              select: 'name email', 
+              foreignField: '_id', 
+              localField: 'userId', 
+              strictPopulate: false
+            }}) as unknown as PopulatedActivity[]
+          
 
         const hasNextPage = activities.length > limit;
         const edges = activities.slice(0, limit).map((activity) => ({
@@ -145,9 +173,9 @@ export const activityResolvers = {
             data: activity.data,
             createdAt: activity.createdAt,
             user: {
-              id: activity.userId._id.toString(),
-              name: activity.userId.name,
-              email: activity.userId.email,
+              id: activity.userId.userId._id.toString(),
+              name: activity.userId.userId.name,
+              email: activity.userId.userId.email,
               avatar: activity.userId.avatar
             }
           },

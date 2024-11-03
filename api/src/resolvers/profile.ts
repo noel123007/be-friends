@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import { AppError } from "../common/errors/AppError";
 import { IProfile } from "../models/Profile";
 import {
@@ -36,7 +35,7 @@ export const profileResolvers = {
             try {
                 const targetUserId = userId || user.id;
                 const profile = await models.Profile.findOne({
-                    userId: new Types.ObjectId(targetUserId),
+                   $or: [{userId: targetUserId}, {_id: targetUserId}]
                 }).lean<PopulatedProfile>();
 
                 if (!profile) {

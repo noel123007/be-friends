@@ -18,6 +18,11 @@ interface PopulatedUser {
   name: string;
   email: string;
   avatar?: string;
+  userId: {
+    _id: Types.ObjectId;
+    name: string;
+    email: string; 
+  }
 }
 
 interface PopulatedFriend {
@@ -82,12 +87,29 @@ export const friendResolvers = {
         const friends = await models.Friend.find(query)
           .sort({ _id: -1 })
           .limit(limit + 1)
-          .populate([
-            { path: "senderId", select: "-password" },
-            { path: "receiverId", select: "-password" },
-          ])
-          .lean<PopulatedFriend[]>();
-
+          .populate({
+            path: 'senderId',
+            model: 'Profile',
+            localField: 'senderId',
+            foreignField: 'userId',
+            populate: {
+              path: 'userId',
+              model: 'User',
+              select: '-password'
+            }
+          })
+          .populate({
+            path: 'receiverId',
+            model: 'Profile',
+            localField: 'receiverId',
+            foreignField: 'userId',
+            populate: {
+              path: 'userId',
+              model: 'User',
+              select: '-password'
+            }
+          }) as unknown as PopulatedFriend[]
+ 
         const hasNextPage = friends.length > limit;
         const edges = friends.slice(0, limit).map((friend) => ({
           node: {
@@ -100,13 +122,13 @@ export const friendResolvers = {
             sender: {
               id: friend.senderId._id.toString(),
               name: friend.senderId.name,
-              email: friend.senderId.email,
+              email: friend.senderId.userId.email,
               avatar: friend.senderId.avatar
             },
             receiver: {
               id: friend.receiverId._id.toString(),
               name: friend.receiverId.name,
-              email: friend.receiverId.email,
+              email: friend.receiverId.userId.email,
               avatar: friend.receiverId.avatar
             },
             user:
