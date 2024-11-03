@@ -1,7 +1,7 @@
 import {
-    DeleteObjectCommand,
-    PutObjectCommand,
-    S3Client,
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
 } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 import { AppError } from "../../common/errors/AppError";
@@ -19,7 +19,7 @@ export class S3UploadService implements UploadService {
     this.bucket = process.env.AWS_S3_BUCKET || "";
     this.region = process.env.AWS_REGION || "us-east-1";
     this.maxFileSize = Number(process.env.MAX_FILE_SIZE) || 5 * 1024 * 1024;
-    this.uploadFolder = process.env.AWS_S3_UPLOAD_FOLDER || "uploads";
+    this.uploadFolder = process.env.AWS_S3_BUCKET || "uploads";
 
     this.s3Client = new S3Client({
       region: this.region,
@@ -56,7 +56,7 @@ export class S3UploadService implements UploadService {
       const buffer = Buffer.concat(chunks);
       const extension = upload.filename.split(".").pop()?.toLowerCase();
       const uniqueFilename = `${uuidv4()}.${extension}`;
-      const key = `${this.uploadFolder}/${uniqueFilename}`;
+      const key = `${uniqueFilename}`;
 
       const command = new PutObjectCommand({
         Bucket: this.bucket,

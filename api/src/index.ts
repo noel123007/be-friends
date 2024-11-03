@@ -1,11 +1,12 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import dotenv from "dotenv";
+dotenv.config();
 
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { json } from "body-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import express from "express";
 import { graphqlUploadExpress } from 'graphql-upload-minimal';
 import { useServer } from "graphql-ws/lib/use/ws";
@@ -21,7 +22,7 @@ import { errorHandler } from "./middleware/error";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./schema";
 import { Context } from "./types";
-dotenv.config();
+
 
 async function startServer() { 
   const MONGODB_URI = process.env.MONGODB_URI?.replace(/["']/g, '') ?? "mongodb://localhost:27017/befriends";
