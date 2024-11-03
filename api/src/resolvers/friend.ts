@@ -25,6 +25,17 @@ interface PopulatedUser {
   }
 }
 
+
+interface PopulatedSearchUser {
+  _id: {
+    _id: Types.ObjectId; 
+    userId: Types.ObjectId;
+    avatar?: string;
+  };
+  name: string;
+  email: string; 
+}
+
 interface PopulatedFriend {
   _id: Types.ObjectId;
   senderId: PopulatedUser;
@@ -307,20 +318,29 @@ export const friendResolvers = {
               ],
             },
           ],
-        }).select("-password");
-
+        })
+        .select('-password')
+        .populate({
+          path: '_id',
+          model: 'Profile',
+          select: 'avatar',
+          foreignField: 'userId',
+          localField: '_id',
+          strictPopulate: false
+        }) as unknown as PopulatedSearchUser[]
+ 
         const usersWithStatus = await Promise.all(
           users.map(async (foundUser) => {
             const status = await models.Friend.getFriendStatus(
               user.id,
-              foundUser._id.toString()
+              foundUser._id.userId.toString()
             );
 
             return {
-              id: foundUser._id.toString(),
+              id: foundUser._id.userId.toString(),
               name: foundUser.name,
               email: foundUser.email,
-              avatar: foundUser.avatar,
+              avatar: foundUser._id.avatar,
               friendStatus: status,
             };
           })
