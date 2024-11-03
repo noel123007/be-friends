@@ -1,5 +1,5 @@
 import { createWriteStream } from "fs";
-import { mkdir, unlink } from "fs/promises";
+import { unlink } from "fs/promises";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { AppError } from "../../common/errors/AppError";
@@ -27,7 +27,7 @@ export class LocalUploadService implements UploadService {
         );
       }
 
-      await mkdir(this.uploadDir, { recursive: true });
+      // await mkdir(this.uploadDir, { recursive: true });
 
       const extension = path.extname(upload.filename);
       const uniqueFilename = `${uuidv4()}${extension}`;

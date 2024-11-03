@@ -1,5 +1,17 @@
 import winston from "winston";
 
+const isProduction = process.env.NODE_ENV === "production";
+
+const fileTransports = [
+  new winston.transports.File({
+    filename: "logs/error.log",
+    level: "error",
+  }),
+  new winston.transports.File({
+    filename: "logs/combined.log",
+  }),
+];
+
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || "info",
   format: winston.format.combine(
@@ -13,13 +25,7 @@ const logger = winston.createLogger({
         winston.format.simple()
       ),
     }),
-    new winston.transports.File({
-      filename: "logs/error.log",
-      level: "error",
-    }),
-    new winston.transports.File({
-      filename: "logs/combined.log",
-    }),
+    ...(!isProduction ? fileTransports : []),
   ],
 });
 

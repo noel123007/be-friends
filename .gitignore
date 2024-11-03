@@ -11,3 +11,11 @@ api/**/*.log
 
 api/env/
 api/requirements
+
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

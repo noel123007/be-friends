@@ -1,6 +1,6 @@
-import { NotificationPreferencesInput, notificationPreferencesSchema } from "@/schema/validation/notification";
 import { Types } from "mongoose";
 import { AppError } from "../common/errors/AppError";
+import { NotificationPreferencesInput, notificationPreferencesSchema } from "../schema/validation/notification";
 import { Context } from "../types";
 import { logger } from "../util/logger";
 import { validate } from "../util/validate";

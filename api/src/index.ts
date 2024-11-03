@@ -23,14 +23,11 @@ import { typeDefs } from "./schema";
 import { Context } from "./types";
 dotenv.config();
 
-async function startServer() {
+async function startServer() { 
+  const MONGODB_URI = process.env.MONGODB_URI?.replace(/["']/g, '') ?? "mongodb://localhost:27017/befriends";
+  
   const app = express();
   const httpServer = createServer(app);
-
-  // Connect to MongoDB
-  const MONGODB_URI =
-    process.env.MONGODB_URI ?? "mongodb://localhost:27017/befriends";
-
   try {
     await mongoose.connect(MONGODB_URI);
     console.log("📦 Connected to MongoDB")
@@ -125,6 +122,11 @@ async function startServer() {
 
   // Serve uploaded files
   app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
+  // Add health check endpoint
+  app.get('/health', (_, res) => {
+    res.status(200).json({ status: 'healthy' })
+  })
 
   const PORT = process.env.PORT ?? 4000;
   httpServer.listen(PORT, () => {
