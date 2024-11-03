@@ -1,9 +1,9 @@
-import { FriendStatus } from "@/types/enums";
 import { Types } from "mongoose";
 import { AppError } from "../common/errors/AppError";
 import { IActivity } from "../models/Activity";
 import { ActivityPagination, activityPaginationSchema } from "../schema/validation/activity";
 import { Context } from "../types";
+import { FriendStatus } from "../types/enums";
 import { logger } from "../util/logger";
 import { validate } from "../util/validate";
 
