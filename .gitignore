@@ -1,16 +1,14 @@
 # Client
-client/.env
 
-client/requirements 
+
 
 # API
-api/.env
 api/node_modules
 api/dist
 api/**/*.log
 
 api/env/
-api/requirements
+ 
 
 .idea
 .DS_Store
